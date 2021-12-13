@@ -1,0 +1,45 @@
+.btn {
+  @apply px-4 py-3 rounded text-sm sm:text-base text-white uppercase leading-none w-full md:w-auto md:min-w-[150px];
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.27);
+  transition: all 0.3s ease;
+  border: 1px solid #c6934b;
+}
+
+.btn-primary {
+  background: #c6934b;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.btn-claim {
+  @apply max-w-[8rem];
+  border: none;
+  &:hover {
+    background-color: #916a35;
+  }
+}
+
+.btn-secondary {
+  background-color: transparent;
+
+  &:hover {
+    background-color: #c6934b;
+  }
+}
+
+.btn-info {
+  background: #7f2122;
+  border: 1px solid #7f2122;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.btn-success {
+  background: #7f2122;
+  border: 1px solid #7f2122;
+  &:hover {
+    background-color: transparent;
+  }
+}

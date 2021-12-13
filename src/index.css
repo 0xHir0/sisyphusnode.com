@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Augustus';
+  src: url(./assets/font/AUGUSTUS.TTF);
+}
+
+@font-face {
+  font-family: 'Roman';
+  src: url(./assets/font/Roman_SD.ttf);
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+html,
+body {
+  font-family: 'Augustus', sans-serif;
+}
+
+* {
+  font-family: inherit;
+}
+
+button {
+  outline: none !important;
+}
+
+h2 {
+  font-family: 'Roman';
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
