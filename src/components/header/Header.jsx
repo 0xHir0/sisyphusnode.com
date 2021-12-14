@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../button';
 import './Header.scss';
-
 import { toast } from 'react-toastify';
 import { Avalanche, useEthers } from '@usedapp/core';
 import { truncate } from '../../utils';
@@ -16,7 +15,7 @@ const Header = () => {
   });
 
   const handleClickAddressButton = (link) => {
-    navigate(link);
+    window.open('https://www.snowtrace.io/' + link, '_blank');
   };
 
   const handleConnectWalletBtn = async () => {
@@ -50,7 +49,7 @@ const Header = () => {
         <Button
           title='Contract address'
           className='btn-primary'
-          handleClick={(e) => handleClickAddressButton('/')}
+          handleClick={() => handleClickAddressButton('')}
         />
         {account ? (
           <Button
@@ -62,7 +61,7 @@ const Header = () => {
           <Button
             title='Connect wallet'
             className='btn-secondary'
-            handleClick={(e) => handleConnectWalletBtn()}
+            handleClick={() => handleConnectWalletBtn()}
           />
         )}
       </div>
