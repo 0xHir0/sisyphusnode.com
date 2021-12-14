@@ -5,12 +5,11 @@ import './Footer.scss';
 const Footer = () => {
   return (
     <div className='flex items-center justify-center gap-8 py-8'>
-      <a
-        href='/'
+      <div
         className='text-white text-2xl hover:text-gray-200 duration-300'
       >
-        <FaFacebook />
-      </a>
+        SISYPHUS
+      </div>
       <a
         href='/'
         className='text-white text-2xl hover:text-gray-200 duration-300'

@@ -1,8 +1,42 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../button';
 import './Header.scss';
 
+import { toast } from 'react-toastify';
+import { Avalanche, useEthers } from '@usedapp/core';
+import { truncate } from '../../utils';
+
 const Header = () => {
+  const navigate = useNavigate();
+  const { activateBrowserWallet, account } = useEthers();
+
+  window.ethereum.on('chainChanged', () => {
+    window.location.reload();
+  });
+
+  const handleClickAddressButton = (link) => {
+    navigate(link);
+  };
+
+  const handleConnectWalletBtn = async () => {
+    if (typeof web3 !== 'undefined') {
+      const networkId = await window.ethereum.request({
+        method: 'net_version',
+      });
+
+      console.log(networkId, Avalanche.chainId);
+
+      if (networkId == Avalanche.chainId) {
+        activateBrowserWallet();
+      } else {
+        toast.error('Please make sure you are on the Avalanche network.');
+      }
+    } else {
+      toast.error('Please make sure your metamask.');
+    }
+  };
+
   return (
     <div className='header'>
       <a href='/'>
@@ -16,13 +50,21 @@ const Header = () => {
         <Button
           title='Contract address'
           className='btn-primary'
-          handleClick={() => {}}
+          handleClick={(e) => handleClickAddressButton('/')}
         />
-        <Button
-          title='Connect wallet'
-          className='btn-secondary'
-          handleClick={() => {}}
-        />
+        {account ? (
+          <Button
+            title={truncate(account)}
+            className='btn-secondary'
+            handleClick={(e) => {}}
+          />
+        ) : (
+          <Button
+            title='Connect wallet'
+            className='btn-secondary'
+            handleClick={(e) => handleConnectWalletBtn()}
+          />
+        )}
       </div>
     </div>
   );
