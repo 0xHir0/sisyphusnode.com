@@ -1,6 +1,8 @@
 .homepage {
   @apply bg-cover bg-no-repeat min-h-screen bg-black text-[#e0ddd5];
   background: url('/assets/images/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .container-shadow {
