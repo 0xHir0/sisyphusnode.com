@@ -1,17 +1,17 @@
 import { ethers } from 'ethers';
 import { useContractCall } from '@usedapp/core';
-import PokerpupsnftABI from '../abi/PokerpupsnftABI.json';
-import { PokerpupsnftContractAddress } from '../contracts';
+import SisyphusABI from '../abi/SisyphusABI.json';
+import { SisyphusContractAddress } from '../contracts';
 
-const PokerpupsnftContractInterface = new ethers.utils.Interface(
-  PokerpupsnftABI
+const SisyphusContractInterface = new ethers.utils.Interface(
+  SisyphusABI
 );
 
 export const useMaxAmount = () => {
   const [maxAmount] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'MAX_AMOUNT',
       args: [],
     }) ?? [];
@@ -22,8 +22,8 @@ export const useMaxAmount = () => {
 export const useTokenPrice = () => {
   const [PRICE] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'PRICE',
       args: [],
     }) ?? [];
@@ -34,8 +34,8 @@ export const useTokenPrice = () => {
 export const useMaxMint = () => {
   const [MAX_MINT] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'MAX_MINT',
       args: [],
     }) ?? [];
@@ -46,8 +46,8 @@ export const useMaxMint = () => {
 export const useSaleIsActive = () => {
   const [saleIsActive] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'saleIsActive',
       args: [],
     }) ?? [];
@@ -58,8 +58,8 @@ export const useSaleIsActive = () => {
 export const useWhiteListSaleIsActive = () => {
   const [whiteListSaleIsActive] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'whiteListSaleIsActive',
       args: [],
     }) ?? [];
@@ -70,8 +70,8 @@ export const useWhiteListSaleIsActive = () => {
 export const useWhitelist = (address) => {
   const [whitelist] =
     useContractCall({
-      abi: PokerpupsnftContractInterface,
-      address: PokerpupsnftContractAddress,
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
       method: 'whitelist',
       args: [address],
     }) ?? [];

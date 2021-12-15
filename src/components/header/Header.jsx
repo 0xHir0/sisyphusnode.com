@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../button';
 import './Header.scss';
-
 import { toast } from 'react-toastify';
 import { Avalanche, useEthers } from '@usedapp/core';
 import { truncate } from '../../utils';
@@ -16,18 +15,15 @@ const Header = () => {
   });
 
   const handleClickAddressButton = (link) => {
-    navigate(link);
+    window.open('https://www.snowtrace.io/' + link, '_blank');
   };
 
   const handleConnectWalletBtn = async () => {
     if (typeof web3 !== 'undefined') {
-      const networkId = await window.ethereum.request({
-        method: 'net_version',
-      });
-
+      const networkId = parseInt(window.ethereum.chainId, 16);
       console.log(networkId, Avalanche.chainId);
 
-      if (networkId == Avalanche.chainId) {
+      if (networkId === Avalanche.chainId) {
         activateBrowserWallet();
       } else {
         toast.error('Please make sure you are on the Avalanche network.');
@@ -50,7 +46,7 @@ const Header = () => {
         <Button
           title='Contract address'
           className='btn-primary'
-          handleClick={(e) => handleClickAddressButton('/')}
+          handleClick={() => handleClickAddressButton('')}
         />
         {account ? (
           <Button
@@ -62,7 +58,7 @@ const Header = () => {
           <Button
             title='Connect wallet'
             className='btn-secondary'
-            handleClick={(e) => handleConnectWalletBtn()}
+            handleClick={() => handleConnectWalletBtn()}
           />
         )}
       </div>
