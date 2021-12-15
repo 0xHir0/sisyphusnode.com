@@ -12,13 +12,43 @@ import './HomePage.scss';
 import { Avalanche, useEthers } from '@usedapp/core';
 
 const HomePage = () => {
-  const { activateBrowserWallet, account } = useEthers();
-
-  const [nodeName, setNodeName] = useState('');
+  const { account } = useEthers();
+  
+  const [state, setState] = useState({
+    nodeName: '',
+    myNode: 0,
+    allNodes: 0,
+    rewards: 0,
+  });
 
   const handleInputChange = (e) => {
-    setNodeName(e.target.value);
+    setState({...state, nodeName: e.target.value});
   };
+
+  /* Handle the event to claim all rewards token for each user */
+  const handleClaim = () => {
+    // alert(state.nodeName)
+  };
+
+  /* Handle the event happened by click `BUY SISYPHUS` button */
+  const handleBuySisyphus = () => {
+    // alert('buy sisyphus')
+  }
+  
+  /* Move to discord channel */
+  const handleDiscordBtn = (link) => {
+    window.open(link, '_blank');
+  }
+
+  /* Handle the event to approve the contract before trying to create a node */
+  const handleApprove = () => {
+    // alert('approve function')
+  }
+
+  /* Handle the event to create new node */
+  const handleCreateNode = () => {
+    //  alert('approve function')
+  }
 
   return (
     <>
@@ -31,14 +61,14 @@ const HomePage = () => {
                 <div className='text-5xl'>
                   <MdAccountBalanceWallet />
                 </div>
-                <h3 className='text-3xl text-[#c6934b] font-bold'>0 / 100</h3>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>25 / 100</h3>
                 <div className='uppercase'>My nodes</div>
               </div>
               <div className='flex flex-col justify-center items-center w-full bg-[#1A202C] px-6 py-8 rounded-[10px] container-shadow gap-2'>
                 <div className='text-5xl'>
                   <MdViewAgenda />
                 </div>
-                <h3 className='text-3xl text-[#c6934b] font-bold'>0</h3>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>1250</h3>
                 <div className='uppercase'>All nodes</div>
               </div>
               <div className='mb-4 relative flex flex-col justify-center items-center w-full bg-[#1A202C] px-6 pt-8 pb-8 md:pb-16 rounded-[10px] container-shadow gap-2'>
@@ -50,7 +80,7 @@ const HomePage = () => {
                 <Button
                   className='btn-primary btn-claim absolute -bottom-6'
                   title='Claim all'
-                  handleClick={() => {}}
+                  handleClick={(e) => handleClaim()}
                 />
               </div>
             </div>
@@ -103,12 +133,12 @@ const HomePage = () => {
                   <Button
                     title='Buy Sisyphus'
                     className='btn-info'
-                    handleClick={() => {}}
+                    handleClick={(e) => handleBuySisyphus()}
                   />
                   <Button
                     title='Discord'
                     className='btn-primary'
-                    handleClick={() => {}}
+                    handleClick={(e) => handleDiscordBtn('https://discord.com/')}
                   />
                 </div>
               </div>
@@ -142,7 +172,7 @@ const HomePage = () => {
                 <div className='flex flex-col md:flex-row items-center gap-x-8 gap-y-2 pt-2 border-t border-t-black'>
                   <Input
                     className='w-full md:w-60'
-                    value={nodeName}
+                    value={state.nodeName}
                     handleInputChange={handleInputChange}
                   />
                   <div>
@@ -156,12 +186,12 @@ const HomePage = () => {
                   <Button
                     title='Approve'
                     className='btn-success'
-                    handleClick={() => {}}
+                    handleClick={(e) => handleApprove()}
                   />
                   <Button
                     title='Create a node'
                     className='btn-primary'
-                    handleClick={() => {}}
+                    handleClick={(e) => {handleCreateNode()}}
                   />
                 </div>
               </div>

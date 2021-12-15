@@ -20,13 +20,10 @@ const Header = () => {
 
   const handleConnectWalletBtn = async () => {
     if (typeof web3 !== 'undefined') {
-      const networkId = await window.ethereum.request({
-        method: 'net_version',
-      });
-
+      const networkId = parseInt(window.ethereum.chainId, 16);
       console.log(networkId, Avalanche.chainId);
 
-      if (networkId == Avalanche.chainId) {
+      if (networkId === Avalanche.chainId) {
         activateBrowserWallet();
       } else {
         toast.error('Please make sure you are on the Avalanche network.');
