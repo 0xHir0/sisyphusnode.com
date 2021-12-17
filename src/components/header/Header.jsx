@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../button';
 import './Header.scss';
 import { toast } from 'react-toastify';
@@ -7,7 +7,20 @@ import { truncate } from '../../utils';
 
 const Header = () => {
   const { activateBrowserWallet, account } = useEthers();
-  
+
+  useEffect(() => {
+    if (typeof web3 !== 'undefined') {
+      const networkId = parseInt(window.ethereum.chainId, 16);
+      console.log(networkId, Ropsten.chainId);
+
+      if (networkId !== Ropsten.chainId) {
+        toast.error('Please make sure you are on the Avalanche network.');
+      }
+    } else {
+      toast.error('Please make sure your metamask.');
+    }
+  }, []);
+
   window.ethereum.on('chainChanged', () => {
     window.location.reload();
   });

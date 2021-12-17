@@ -22,18 +22,6 @@ export const useTotalFees = () => {
   return totalFees;
 };
 
-export const useGetNodeNumberOf = (address) => {
-  const [getNodeNumberOf] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'getNodeNumberOf',
-      args: [address],
-    }) ?? [];
-
-  return getNodeNumberOf;
-};
-
 export const useBalanceOf = (address) => {
   const [balanceOf] =
     useContractCall({
@@ -46,22 +34,68 @@ export const useBalanceOf = (address) => {
   return balanceOf;
 };
 
-export const useGetRewardAmountOf = (address) => {
-  const [getRewardAmountOf] =
+export const useGetNodeNumberOf = (account) => {
+  const [getNodeNumberOf] =
     useContractCall({
       abi: SisyphusContractInterface,
       address: SisyphusContractAddress,
-      method: 'getRewardAmountOf',
-      args: [address],
+      method: 'getNodeNumberOf',
+      args: [account],
     }) ?? [];
 
-  return getRewardAmountOf;
+  return getNodeNumberOf;
 };
 
-export const useGestationApprove = () => {
+export const useGetRewardAmount = (nodeNumber) => {
+  const [getRewardAmount] =
+    useContractCall(
+      nodeNumber > 0 && {
+        abi: SisyphusContractInterface,
+        address: SisyphusContractAddress,
+        method: 'getRewardAmount',
+        args: [],
+      }
+    ) ?? [];
+
+  return getRewardAmount;
+};
+
+export const useGetTotalCreatedNodes = () => {
+  const [getTotalCreatedNodes] =
+    useContractCall({
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
+      method: 'getTotalCreatedNodes',
+      args: [],
+    }) ?? [];
+
+  return getTotalCreatedNodes;
+};
+
+export const useCashoutAll = () => {
   const { state, send, event } = useContractFunction(
     sisyphusContract,
-    'gestationApprove',
+    'cashoutAll',
+    {}
+  );
+
+  return { state, send, event };
+};
+
+export const useApprove = () => {
+  const { state, send, event } = useContractFunction(
+    sisyphusContract,
+    'approve',
+    {}
+  );
+
+  return { state, send, event };
+};
+
+export const useCreateNodeWithTokens = () => {
+  const { state, send, event } = useContractFunction(
+    sisyphusContract,
+    'createNodeWithTokens',
     {}
   );
 
