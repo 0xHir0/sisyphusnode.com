@@ -1,80 +1,69 @@
 import { ethers } from 'ethers';
-import { useContractCall } from '@usedapp/core';
+import { Contract } from '@ethersproject/contracts';
+import { useContractCall, useContractFunction } from '@usedapp/core';
 import SisyphusABI from '../abi/SisyphusABI.json';
 import { SisyphusContractAddress } from '../contracts';
 
-const SisyphusContractInterface = new ethers.utils.Interface(
-  SisyphusABI
+const SisyphusContractInterface = new ethers.utils.Interface(SisyphusABI);
+const sisyphusContract = new Contract(
+  SisyphusContractAddress,
+  SisyphusContractInterface
 );
 
-export const useMaxAmount = () => {
-  const [maxAmount] =
+export const useTotalFees = () => {
+  const [totalFees] =
     useContractCall({
       abi: SisyphusContractInterface,
       address: SisyphusContractAddress,
-      method: 'MAX_AMOUNT',
+      method: 'totalFees',
       args: [],
     }) ?? [];
 
-  return maxAmount;
+  return totalFees;
 };
 
-export const useTokenPrice = () => {
-  const [PRICE] =
+export const useGetNodeNumberOf = (address) => {
+  const [getNodeNumberOf] =
     useContractCall({
       abi: SisyphusContractInterface,
       address: SisyphusContractAddress,
-      method: 'PRICE',
-      args: [],
-    }) ?? [];
-
-  return PRICE;
-};
-
-export const useMaxMint = () => {
-  const [MAX_MINT] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'MAX_MINT',
-      args: [],
-    }) ?? [];
-
-  return MAX_MINT;
-};
-
-export const useSaleIsActive = () => {
-  const [saleIsActive] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'saleIsActive',
-      args: [],
-    }) ?? [];
-
-  return saleIsActive;
-};
-
-export const useWhiteListSaleIsActive = () => {
-  const [whiteListSaleIsActive] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'whiteListSaleIsActive',
-      args: [],
-    }) ?? [];
-
-  return whiteListSaleIsActive;
-};
-
-export const useWhitelist = (address) => {
-  const [whitelist] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'whitelist',
+      method: 'getNodeNumberOf',
       args: [address],
     }) ?? [];
 
-  return whitelist;
+  return getNodeNumberOf;
+};
+
+export const useBalanceOf = (address) => {
+  const [balanceOf] =
+    useContractCall({
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
+      method: 'balanceOf',
+      args: [address],
+    }) ?? [];
+
+  return balanceOf;
+};
+
+export const useGetRewardAmountOf = (address) => {
+  const [getRewardAmountOf] =
+    useContractCall({
+      abi: SisyphusContractInterface,
+      address: SisyphusContractAddress,
+      method: 'getRewardAmountOf',
+      args: [address],
+    }) ?? [];
+
+  return getRewardAmountOf;
+};
+
+export const useGestationApprove = () => {
+  const { state, send, event } = useContractFunction(
+    sisyphusContract,
+    'gestationApprove',
+    {}
+  );
+
+  return { state, send, event };
 };

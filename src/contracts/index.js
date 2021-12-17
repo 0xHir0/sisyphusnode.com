@@ -1,2 +1,2 @@
 export const SisyphusContractAddress =
-  '0xb55A8EEa5939aF5F18061a91080692231dB8d576';
+  '0x501efcC1942CE98E42C69E130108a2acC29EbCBf';

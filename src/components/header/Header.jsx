@@ -1,29 +1,27 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../button';
 import './Header.scss';
 import { toast } from 'react-toastify';
-import { Avalanche, useEthers } from '@usedapp/core';
+import { Ropsten, useEthers } from '@usedapp/core';
 import { truncate } from '../../utils';
 
 const Header = () => {
-  const navigate = useNavigate();
   const { activateBrowserWallet, account } = useEthers();
-
+  
   window.ethereum.on('chainChanged', () => {
     window.location.reload();
   });
 
   const handleClickAddressButton = (link) => {
-    window.open('https://www.snowtrace.io/' + link, '_blank');
+    window.open('https://testnet.snowtrace.io/address/' + link, '_blank');
   };
 
   const handleConnectWalletBtn = async () => {
     if (typeof web3 !== 'undefined') {
       const networkId = parseInt(window.ethereum.chainId, 16);
-      console.log(networkId, Avalanche.chainId);
+      console.log(networkId, Ropsten.chainId);
 
-      if (networkId === Avalanche.chainId) {
+      if (networkId === Ropsten.chainId) {
         activateBrowserWallet();
       } else {
         toast.error('Please make sure you are on the Avalanche network.');
@@ -37,7 +35,7 @@ const Header = () => {
     <div className='header'>
       <a href='/'>
         <img
-          src='./assets/images/trywith.png'
+          src='./assets/images/logo.png'
           className='w-40 h-34 min-w-[128px] min-h-[96px]'
           alt='logo'
         />
@@ -46,7 +44,11 @@ const Header = () => {
         <Button
           title='Contract address'
           className='btn-primary'
-          handleClick={() => handleClickAddressButton('')}
+          handleClick={() =>
+            handleClickAddressButton(
+              '0x2fbfcbcbeb28b18c7cf94ee68565b852f247f200'
+            )
+          }
         />
         {account ? (
           <Button

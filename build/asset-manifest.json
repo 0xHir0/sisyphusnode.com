@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/static/css/main.8ad77181.css",
-    "main.js": "/static/js/main.c456ae13.js",
-    "static/css/686.595d53d5.chunk.css": "/static/css/686.595d53d5.chunk.css",
-    "static/js/686.b9da3fcb.chunk.js": "/static/js/686.b9da3fcb.chunk.js",
+    "main.js": "/static/js/main.e1408218.js",
+    "static/css/932.0af765c4.chunk.css": "/static/css/932.0af765c4.chunk.css",
+    "static/js/932.27ba0413.chunk.js": "/static/js/932.27ba0413.chunk.js",
     "static/js/787.f329340d.chunk.js": "/static/js/787.f329340d.chunk.js",
-    "static/js/318.6f3811ce.chunk.js": "/static/js/318.6f3811ce.chunk.js",
+    "static/js/220.89835a62.chunk.js": "/static/js/220.89835a62.chunk.js",
     "static/media/bg.jpg": "/static/media/bg.411109dfed6867982497.jpg",
     "static/media/AUGUSTUS.TTF": "/static/media/AUGUSTUS.aa7cd683f9ffe9e4e256.TTF",
     "static/media/Roman_SD.ttf": "/static/media/Roman_SD.6772a8ef308112f0ae4c.ttf",
@@ -14,14 +14,14 @@
     "index.html": "/index.html",
     "static/media/icon-spinner.svg": "/static/media/icon-spinner.4bf1de1eaac1b96c4f264473cb172ff9.svg",
     "main.8ad77181.css.map": "/static/css/main.8ad77181.css.map",
-    "main.c456ae13.js.map": "/static/js/main.c456ae13.js.map",
-    "686.595d53d5.chunk.css.map": "/static/css/686.595d53d5.chunk.css.map",
-    "686.b9da3fcb.chunk.js.map": "/static/js/686.b9da3fcb.chunk.js.map",
+    "main.e1408218.js.map": "/static/js/main.e1408218.js.map",
+    "932.0af765c4.chunk.css.map": "/static/css/932.0af765c4.chunk.css.map",
+    "932.27ba0413.chunk.js.map": "/static/js/932.27ba0413.chunk.js.map",
     "787.f329340d.chunk.js.map": "/static/js/787.f329340d.chunk.js.map",
-    "318.6f3811ce.chunk.js.map": "/static/js/318.6f3811ce.chunk.js.map"
+    "220.89835a62.chunk.js.map": "/static/js/220.89835a62.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8ad77181.css",
-    "static/js/main.c456ae13.js"
+    "static/js/main.e1408218.js"
   ]
 }
