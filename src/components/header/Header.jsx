@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Button from '../button';
 import './Header.scss';
 import { toast } from 'react-toastify';
-import { Ropsten, useEthers } from '@usedapp/core';
+import { Avalanche, useEthers } from '@usedapp/core';
 import { truncate } from '../../utils';
 
 const Header = () => {
@@ -11,9 +11,9 @@ const Header = () => {
   useEffect(() => {
     if (typeof web3 !== 'undefined') {
       const networkId = parseInt(window.ethereum.chainId, 16);
-      console.log(networkId, Ropsten.chainId);
+      console.log(networkId, Avalanche.chainId);
 
-      if (networkId !== Ropsten.chainId) {
+      if (networkId !== Avalanche.chainId) {
         toast.error('Please make sure you are on the Avalanche network.');
       }
     } else {
@@ -32,9 +32,9 @@ const Header = () => {
   const handleConnectWalletBtn = async () => {
     if (typeof web3 !== 'undefined') {
       const networkId = parseInt(window.ethereum.chainId, 16);
-      console.log(networkId, Ropsten.chainId);
+      console.log(networkId, Avalanche.chainId);
 
-      if (networkId === Ropsten.chainId) {
+      if (networkId === Avalanche.chainId) {
         activateBrowserWallet();
       } else {
         toast.error('Please make sure you are on the Avalanche network.');

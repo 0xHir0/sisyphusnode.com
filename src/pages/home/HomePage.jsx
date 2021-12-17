@@ -14,7 +14,7 @@ import { ReactComponent as InfoIcon } from '../../assets/icons/icon-info.svg';
 import { ReactComponent as PrizeIcon } from '../../assets/icons/icon-prize.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import './HomePage.scss';
-import { Ropsten, useEthers } from '@usedapp/core';
+import { Avalanche, useEthers } from '@usedapp/core';
 import {
   useTotalFees,
   useBalanceOf,
@@ -50,7 +50,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const networkId = parseInt(window.ethereum.chainId, 16);
-    if (networkId === Ropsten.chainId) {
+    if (networkId === Avalanche.chainId) {
       setIsAvax(true);
     }
   });
