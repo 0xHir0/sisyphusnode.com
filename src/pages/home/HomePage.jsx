@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { MdAccountBalanceWallet, MdViewAgenda, MdPaid } from 'react-icons/md';
+import React, { useState, useEffect } from 'react';
+import CountUp from 'react-countup';
+import {
+  MdAccountBalanceWallet,
+  MdViewAgenda,
+  MdPaid,
+  MdGeneratingTokens,
+} from 'react-icons/md';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import Header from '../../components/header';
@@ -8,47 +14,137 @@ import { ReactComponent as InfoIcon } from '../../assets/icons/icon-info.svg';
 import { ReactComponent as PrizeIcon } from '../../assets/icons/icon-prize.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import './HomePage.scss';
-
 import { Avalanche, useEthers } from '@usedapp/core';
+import {
+  useTotalFees,
+  useBalanceOf,
+  useGetNodeNumberOf,
+  useGetRewardAmount,
+  useGetTotalCreatedNodes,
+  useCashoutAll,
+  useApprove,
+  useCreateNodeWithTokens,
+} from '../../hooks';
+import { toast } from 'react-toastify';
 
 const HomePage = () => {
   const { account } = useEthers();
-  
-  const [state, setState] = useState({
-    nodeName: '',
-    myNode: 0,
-    allNodes: 0,
-    rewards: 0,
+
+  const totalFees = useTotalFees();
+  const balanceOf = useBalanceOf(account);
+  const getNodeNumberOf = useGetNodeNumberOf(account);
+  const getRewardAmount = useGetRewardAmount(getNodeNumberOf);
+  const getTotalNodesCreated = useGetTotalCreatedNodes();
+
+  const { state: cashoutAllState, send: cashoutAll } = useCashoutAll();
+  const { state: approveState, send: approve } = useApprove();
+  const { state: createNodeState, send: createNodeWithTokens } =
+    useCreateNodeWithTokens();
+
+  const [isAvax, setIsAvax] = useState(false);
+  const [nodeName, setNodeName] = useState('');
+  const [myNode, setMyNode] = useState(0);
+  const [allNodes, setAllNodes] = useState(0);
+  const [ssph, setSSPH] = useState('');
+  const [rewards, setRewards] = useState(0);
+
+  useEffect(() => {
+    const networkId = parseInt(window.ethereum.chainId, 16);
+    if (networkId === Avalanche.chainId) {
+      setIsAvax(true);
+    }
   });
 
+  useEffect(() => {
+    setSSPH(balanceOf / 10 ** 18);
+  }, [balanceOf]);
+
+  useEffect(() => {
+    setMyNode(getNodeNumberOf);
+  }, [getNodeNumberOf]);
+
+  useEffect(() => {
+    setAllNodes(getTotalNodesCreated);
+  }, [getTotalNodesCreated]);
+
+  useEffect(() => {
+    console.log('TotalNodesCreated => ', getRewardAmount);
+    getRewardAmount && setAllNodes(getRewardAmount);
+  }, [getRewardAmount]);
+
+  useEffect(() => {
+    console.log(cashoutAllState);
+    cashoutAllState.status === 'Exception' &&
+      toast.error(cashoutAllState.errorMessage);
+    cashoutAllState.status === 'Success' &&
+      toast.info('You just claimed all rewards!');
+  }, [cashoutAllState]);
+
+  useEffect(() => {
+    console.log(approveState);
+    approveState.status === 'Success' && toast.info('You are approved!');
+  }, [approveState]);
+
+  useEffect(() => {
+    console.log(createNodeState);
+    createNodeState.status === 'Exception' &&
+      toast.error(createNodeState.errorMessage);
+    createNodeState.status === 'Success' &&
+      toast.info('You just created a node!');
+  }, [createNodeState]);
+
   const handleInputChange = (e) => {
-    setState({...state, nodeName: e.target.value});
+    setNodeName(e.target.value);
   };
 
   /* Handle the event to claim all rewards token for each user */
-  const handleClaim = () => {
-    // alert(state.nodeName)
+  const handleClaimAll = () => {
+    if (isAvax) {
+      myNode > 0 ? cashoutAll() : toast.error('Please create a node');
+    } else {
+      toast.error('Please make sure you are on the Avalanche network');
+    }
   };
 
   /* Handle the event happened by click `BUY SISYPHUS` button */
-  const handleBuySisyphus = () => {
-    // alert('buy sisyphus')
-  }
-  
+  const handleBuySisyphus = (tokenAddress) => {
+    window.open(
+      'https://traderjoexyz.com/#/trade?outputCurrency=' + tokenAddress,
+      '_blank'
+    );
+  };
+
   /* Move to discord channel */
   const handleDiscordBtn = (link) => {
     window.open(link, '_blank');
-  }
+  };
 
   /* Handle the event to approve the contract before trying to create a node */
   const handleApprove = () => {
-    // alert('approve function')
-  }
+    if (isAvax) {
+      approve(
+        '0x501efcc1942ce98e42c69e130108a2acc29ebcbf',
+        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      );
+    } else {
+      toast.error('Please make sure you are on the Avalanche network');
+    }
+  };
 
   /* Handle the event to create new node */
   const handleCreateNode = () => {
-    //  alert('approve function')
-  }
+    if (isAvax) {
+      if (ssph < 10) {
+        toast.error('Please make sure you have at least 10 $SSPH');
+      } else if (nodeName === '') {
+        toast.error('Please enter your node name.');
+      } else {
+        createNodeWithTokens(nodeName);
+      }
+    } else {
+      toast.error('Please make sure you are on the Avalanche network');
+    }
+  };
 
   return (
     <>
@@ -61,26 +157,57 @@ const HomePage = () => {
                 <div className='text-5xl'>
                   <MdAccountBalanceWallet />
                 </div>
-                <h3 className='text-3xl text-[#c6934b] font-bold'>25 / 100</h3>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>
+                  <CountUp
+                    end={myNode}
+                    duration={2}
+                    separator=','
+                    decimal=','
+                  />{' '}
+                  / 100
+                </h3>
                 <div className='uppercase'>My nodes</div>
               </div>
               <div className='flex flex-col justify-center items-center w-full bg-[#1A202C] px-6 py-8 rounded-[10px] container-shadow gap-2'>
                 <div className='text-5xl'>
                   <MdViewAgenda />
                 </div>
-                <h3 className='text-3xl text-[#c6934b] font-bold'>1250</h3>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>
+                  <CountUp
+                    end={allNodes}
+                    duration={2}
+                    separator=','
+                    decimal=','
+                  />
+                </h3>
                 <div className='uppercase'>All nodes</div>
+              </div>
+              <div className='flex flex-col justify-center items-center w-full bg-[#1A202C] px-6 py-8 rounded-[10px] container-shadow gap-2'>
+                <div className='text-5xl'>
+                  <MdGeneratingTokens />
+                </div>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>
+                  <CountUp end={ssph} duration={2} separator=',' decimal=',' />
+                </h3>
+                <div className='uppercase'>My SSPH</div>
               </div>
               <div className='mb-4 relative flex flex-col justify-center items-center w-full bg-[#1A202C] px-6 pt-8 pb-8 md:pb-16 rounded-[10px] container-shadow gap-2'>
                 <div className='text-5xl'>
                   <MdPaid />
                 </div>
-                <h3 className='text-3xl text-[#c6934b] font-bold'>0.00</h3>
+                <h3 className='text-3xl text-[#c6934b] font-bold'>
+                  <CountUp
+                    end={rewards}
+                    duration={3}
+                    separator=','
+                    decimal='.'
+                  />
+                </h3>
                 <div className='uppercase'>My rewards</div>
                 <Button
                   className='btn-primary btn-claim absolute -bottom-6'
                   title='Claim all'
-                  handleClick={(e) => handleClaim()}
+                  handleClick={(e) => handleClaimAll()}
                 />
               </div>
             </div>
@@ -133,12 +260,18 @@ const HomePage = () => {
                   <Button
                     title='Buy Sisyphus'
                     className='btn-info'
-                    handleClick={(e) => handleBuySisyphus()}
+                    handleClick={(e) =>
+                      handleBuySisyphus(
+                        '0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79'
+                      )
+                    }
                   />
                   <Button
                     title='Discord'
                     className='btn-primary'
-                    handleClick={(e) => handleDiscordBtn('https://discord.com/')}
+                    handleClick={(e) =>
+                      handleDiscordBtn('https://discord.com/')
+                    }
                   />
                 </div>
               </div>
@@ -148,17 +281,16 @@ const HomePage = () => {
                 </h2>
                 <div className='pt-4 border-t border-t-black'>
                   Create a SISYPHUS-node with 10{' '}
-                  <span className='uppercase text-[#c6934b]'>$sisyphus</span>{' '}
-                  tokens to earn lifetime high-yield{' '}
-                  <span className='uppercase text-[#c6934b]'>$sisyphus</span>{' '}
-                  token rewards. token Currently estimated rewards: 0.7{' '}
-                  <span className='uppercase text-[#c6934b]'>$sisyphus</span> /
-                  day.
+                  <span className='uppercase text-[#c6934b]'>$SSPH</span> tokens
+                  to earn lifetime high-yield{' '}
+                  <span className='uppercase text-[#c6934b]'>$SSPH</span> token
+                  rewards. token Currently estimated rewards: 0.7{' '}
+                  <span className='uppercase text-[#c6934b]'>$SSPH</span> / day.
                 </div>
                 <div className='pt-4 border-t border-t-black'>
                   Start earning lifetime high-yield{' '}
-                  <span className='uppercase text-[#c6934b]'>$sisyphus</span>{' '}
-                  token rewards. Rewards calculations are based on many factors,
+                  <span className='uppercase text-[#c6934b]'>$SSPH</span> token
+                  rewards. Rewards calculations are based on many factors,
                   including the number of nodes, node revenue, token price, and
                   protocol revenue, and they are variable.
                 </div>
@@ -172,12 +304,14 @@ const HomePage = () => {
                 <div className='flex flex-col md:flex-row items-center gap-x-8 gap-y-2 pt-2 border-t border-t-black'>
                   <Input
                     className='w-full md:w-60'
-                    value={state.nodeName}
+                    value={nodeName}
+                    minLength={4}
+                    maxLength={31}
                     handleInputChange={handleInputChange}
                   />
                   <div>
                     A contribution of 10{' '}
-                    <span className='uppercase text-[#c6934b]'>$sisyphus</span>{' '}
+                    <span className='uppercase text-[#c6934b]'>$SSPH</span>{' '}
                     tokens to the community is required to create a node and
                     participate in rewards.
                   </div>
@@ -191,7 +325,9 @@ const HomePage = () => {
                   <Button
                     title='Create a node'
                     className='btn-primary'
-                    handleClick={(e) => {handleCreateNode()}}
+                    handleClick={(e) => {
+                      handleCreateNode();
+                    }}
                   />
                 </div>
               </div>
