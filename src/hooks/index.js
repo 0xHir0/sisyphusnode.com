@@ -24,24 +24,28 @@ export const useTotalFees = () => {
 
 export const useBalanceOf = (address) => {
   const [balanceOf] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'balanceOf',
-      args: [address],
-    }) ?? [];
+    useContractCall(
+      address && {
+        abi: SisyphusContractInterface,
+        address: SisyphusContractAddress,
+        method: 'balanceOf',
+        args: [address],
+      }
+    ) ?? [];
 
   return balanceOf;
 };
 
 export const useGetNodeNumberOf = (account) => {
   const [getNodeNumberOf] =
-    useContractCall({
-      abi: SisyphusContractInterface,
-      address: SisyphusContractAddress,
-      method: 'getNodeNumberOf',
-      args: [account],
-    }) ?? [];
+    useContractCall(
+      account && {
+        abi: SisyphusContractInterface,
+        address: SisyphusContractAddress,
+        method: 'getNodeNumberOf',
+        args: [account],
+      }
+    ) ?? [];
 
   return getNodeNumberOf;
 };

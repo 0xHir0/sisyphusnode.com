@@ -14,9 +14,8 @@ import { ReactComponent as InfoIcon } from '../../assets/icons/icon-info.svg';
 import { ReactComponent as PrizeIcon } from '../../assets/icons/icon-prize.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import './HomePage.scss';
-import { Avalanche, useEthers } from '@usedapp/core';
+import { Ropsten, useEthers } from '@usedapp/core';
 import {
-  useTotalFees,
   useBalanceOf,
   useGetNodeNumberOf,
   useGetRewardAmount,
@@ -30,7 +29,6 @@ import { toast } from 'react-toastify';
 const HomePage = () => {
   const { account } = useEthers();
 
-  const totalFees = useTotalFees();
   const balanceOf = useBalanceOf(account);
   const getNodeNumberOf = useGetNodeNumberOf(account);
   const getRewardAmount = useGetRewardAmount(getNodeNumberOf);
@@ -45,15 +43,15 @@ const HomePage = () => {
   const [nodeName, setNodeName] = useState('');
   const [myNode, setMyNode] = useState(0);
   const [allNodes, setAllNodes] = useState(0);
-  const [ssph, setSSPH] = useState('');
+  const [ssph, setSSPH] = useState(0);
   const [rewards, setRewards] = useState(0);
 
   useEffect(() => {
-    const networkId = parseInt(window.ethereum.chainId, 16);
-    if (networkId === Avalanche.chainId) {
+    const networkId = parseInt(window?.ethereum?.chainId, 16);
+    if (networkId === Ropsten.chainId) {
       setIsAvax(true);
     }
-  });
+  }, []);
 
   useEffect(() => {
     setSSPH(balanceOf / 10 ** 18);
@@ -69,13 +67,14 @@ const HomePage = () => {
 
   useEffect(() => {
     console.log('TotalNodesCreated => ', getRewardAmount);
-    getRewardAmount && setAllNodes(getRewardAmount);
+    getRewardAmount && setRewards(getRewardAmount);
   }, [getRewardAmount]);
 
   useEffect(() => {
     console.log(cashoutAllState);
     cashoutAllState.status === 'Exception' &&
       toast.error(cashoutAllState.errorMessage);
+
     cashoutAllState.status === 'Success' &&
       toast.info('You just claimed all rewards!');
   }, [cashoutAllState]);
@@ -89,6 +88,7 @@ const HomePage = () => {
     console.log(createNodeState);
     createNodeState.status === 'Exception' &&
       toast.error(createNodeState.errorMessage);
+
     createNodeState.status === 'Success' &&
       toast.info('You just created a node!');
   }, [createNodeState]);
@@ -160,7 +160,7 @@ const HomePage = () => {
                 <h3 className='text-3xl text-[#c6934b] font-bold'>
                   <CountUp
                     end={myNode}
-                    duration={2}
+                    duration={1}
                     separator=','
                     decimal=','
                   />{' '}
@@ -175,7 +175,7 @@ const HomePage = () => {
                 <h3 className='text-3xl text-[#c6934b] font-bold'>
                   <CountUp
                     end={allNodes}
-                    duration={2}
+                    duration={1}
                     separator=','
                     decimal=','
                   />
@@ -187,7 +187,13 @@ const HomePage = () => {
                   <MdGeneratingTokens />
                 </div>
                 <h3 className='text-3xl text-[#c6934b] font-bold'>
-                  <CountUp end={ssph} duration={2} separator=',' decimal=',' />
+                  <CountUp
+                    end={ssph}
+                    duration={2}
+                    decimals={2}
+                    separator=','
+                    decimal='.'
+                  />
                 </h3>
                 <div className='uppercase'>My SSPH</div>
               </div>
@@ -199,6 +205,7 @@ const HomePage = () => {
                   <CountUp
                     end={rewards}
                     duration={3}
+                    decimals={2}
                     separator=','
                     decimal='.'
                   />

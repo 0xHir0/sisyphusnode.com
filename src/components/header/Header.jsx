@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Button from '../button';
 import './Header.scss';
 import { toast } from 'react-toastify';
-import { Avalanche, useEthers } from '@usedapp/core';
+import { Ropsten, useEthers } from '@usedapp/core';
 import { truncate } from '../../utils';
 
 const Header = () => {
@@ -10,10 +10,10 @@ const Header = () => {
 
   useEffect(() => {
     if (typeof web3 !== 'undefined') {
-      const networkId = parseInt(window.ethereum.chainId, 16);
-      console.log(networkId, Avalanche.chainId);
+      const networkId = parseInt(window?.ethereum?.chainId, 16);
+      console.log(networkId, Ropsten.chainId);
 
-      if (networkId !== Avalanche.chainId) {
+      if (networkId !== Ropsten.chainId) {
         toast.error('Please make sure you are on the Avalanche network.');
       }
     } else {
@@ -21,7 +21,7 @@ const Header = () => {
     }
   }, []);
 
-  window.ethereum.on('chainChanged', () => {
+  window?.ethereum?.on('chainChanged', () => {
     window.location.reload();
   });
 
@@ -29,12 +29,17 @@ const Header = () => {
     window.open('https://testnet.snowtrace.io/address/' + link, '_blank');
   };
 
+  const handleCopyClipboard = () => {
+    navigator.clipboard.writeText(account);
+    toast.info('Wallet address copied');
+  };
+
   const handleConnectWalletBtn = async () => {
     if (typeof web3 !== 'undefined') {
-      const networkId = parseInt(window.ethereum.chainId, 16);
-      console.log(networkId, Avalanche.chainId);
+      const networkId = parseInt(window?.ethereum?.chainId, 16);
+      console.log(networkId, Ropsten.chainId);
 
-      if (networkId === Avalanche.chainId) {
+      if (networkId === Ropsten.chainId) {
         activateBrowserWallet();
       } else {
         toast.error('Please make sure you are on the Avalanche network.');
@@ -67,7 +72,9 @@ const Header = () => {
           <Button
             title={truncate(account)}
             className='btn-secondary'
-            handleClick={(e) => {}}
+            handleClick={(e) => {
+              handleCopyClipboard();
+            }}
           />
         ) : (
           <Button
